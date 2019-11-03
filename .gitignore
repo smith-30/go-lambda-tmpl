@@ -31,3 +31,7 @@ tmp/
 *.sql
 README.ja.md
 err.log
+*.zip
+futsal_bot
+*function
+.envrc

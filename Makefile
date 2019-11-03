@@ -62,5 +62,9 @@ build:
 	go build -trimpath -ldflags -o build/${GOOS}_${GOARCH}/${NAME} main.go
 
 deploy-lambda:
-	go build -trimpath -o build/${GOOS}_${GOARCH}/${NAME} main.go
-	zip build/${GOOS}_${GOARCH}/$(VERSION)_$(REVISION)_function.zip build/${GOOS}_${GOARCH}/${NAME}
+	GOOS=linux go build -o ${NAME} main.go
+	zip $(VERSION)_${REVISION}_${NAME}.zip ${NAME}
+	rm ${NAME}
+
+clean-zip:
+	rm *.zip
