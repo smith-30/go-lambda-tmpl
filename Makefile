@@ -18,7 +18,7 @@ RESET=\033[0m
 COLORIZE_PASS=sed ''/PASS/s//$$(printf "$(GREEN)PASS$(RESET)")/''
 COLORIZE_FAIL=sed ''/FAIL/s//$$(printf "$(RED)FAIL$(RESET)")/''
 
-NAME=linebot
+NAME=futsal_bot
 
 .PHONY: \
 	runner-test \
