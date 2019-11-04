@@ -2,12 +2,19 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/smith-30/go-lambda-tmpl/service"
 )
+
+type EventSlice struct {
+	Events      []Event `json:"events"`
+	Destination string  `json:"source"`
+}
 
 type Event struct {
 	Type       string     `json:"type"`
@@ -29,9 +36,12 @@ type MessageObj struct {
 	Text string `json:"text"`
 }
 
-func HandleRequest(ctx context.Context, evt Event) error {
-	fmt.Printf("%#v\n", "hello")
-	fmt.Printf("%#v\n", evt)
+func HandleRequest(ctx context.Context, req events.APIGatewayProxyRequest) error {
+	fmt.Printf("%v\n", req.Body)
+
+	e := &EventSlice{}
+	json.Unmarshal([]byte(req.Body), e)
+	fmt.Printf("%v\n", e)
 	at, err := service.GetAccessToken()
 	if err != nil {
 		return err
@@ -41,7 +51,7 @@ func HandleRequest(ctx context.Context, evt Event) error {
 		return err
 	}
 
-	if _, err := bot.ReplyMessage(evt.ReplyToken, linebot.NewTextMessage("hi")).Do(); err != nil {
+	if _, err := bot.ReplyMessage(e.Events[0].ReplyToken, linebot.NewTextMessage("hi")).Do(); err != nil {
 		return err
 	}
 
