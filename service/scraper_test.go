@@ -38,8 +38,26 @@ func TestThisFriday(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := ThisFriday(tt.args.t); got != tt.want {
+			if got := ThisFriday(tt.args.t, "20191108"); got != tt.want {
 				t.Errorf("ThisFriday() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestWheather(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{
+			want: "",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Wheather(); got != tt.want {
+				t.Errorf("Wheather() = %v, want %v", got, tt.want)
 			}
 		})
 	}

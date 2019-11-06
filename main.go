@@ -37,11 +37,9 @@ type MessageObj struct {
 }
 
 func HandleRequest(ctx context.Context, req events.APIGatewayProxyRequest) error {
-	fmt.Printf("%v\n", req.Body)
-
 	e := &EventSlice{}
 	json.Unmarshal([]byte(req.Body), e)
-	fmt.Printf("%v\n", e)
+	fmt.Printf("%#v\n", e)
 	at, err := service.GetAccessToken()
 	if err != nil {
 		return err
@@ -51,8 +49,10 @@ func HandleRequest(ctx context.Context, req events.APIGatewayProxyRequest) error
 		return err
 	}
 
-	if _, err := bot.ReplyMessage(e.Events[0].ReplyToken, linebot.NewTextMessage("hi")).Do(); err != nil {
-		return err
+	if e.Events[0].Message.Text == "now" {
+		if _, err := bot.ReplyMessage(e.Events[0].ReplyToken, linebot.NewTextMessage(service.ListScrape())).Do(); err != nil {
+			return err
+		}
 	}
 
 	return nil
